@@ -7,8 +7,8 @@ A lightweight JavaScript library that provides progressive enhancements for HTML
 Include the required files:
 
 ```html
-<script src="base.js"></script>
-<script src="ajax.js"></script>
+<script src="base.js" async defer></script>
+<script src="ajax.js" async defer></script>
 ```
 
 ## Usage
