@@ -35,8 +35,8 @@ document.addEventListener("input", event => {
   let hasUnsavedChanges = false;
 
   document.addEventListener("change", event => {
-    const input = event.target;
-    if (!input.closest("form[data-warn-unsaved]")) return;
+    const control = event.target;
+    if (!control.closest("form[data-warn-unsaved]")) return;
     hasUnsavedChanges = true;
   });
 
