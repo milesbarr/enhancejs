@@ -1,6 +1,8 @@
 # HTML Enhancements
 
-A lightweight JavaScript library that provides progressive enhancements for HTML forms and user interactions. This library adds functionality while maintaining zero dependencies and graceful degradation.
+A lightweight JavaScript library that provides progressive enhancements for HTML
+forms and user interactions. This library adds functionality while maintaining
+zero dependencies and graceful degradation.
 
 ## Setup
 
@@ -15,7 +17,8 @@ Include the required files:
 
 ### Form Confirmations
 
-Add confirmation dialogs to form submissions using the `data-confirm` or `data-formconfirm` attributes.
+Add confirmation dialogs to form submissions using the `data-confirm` or
+`data-formconfirm` attributes.
 
 ```html
 <form data-confirm="Are you sure you want to submit this form?">
@@ -67,7 +70,8 @@ Preview images for file inputs using the `data-preview-for` attribute.
 
 ### Character Counter
 
-Show the remaining character count for controls with the `data-chars-remaining-for` attribute.
+Show the remaining character count for controls with the
+`data-chars-remaining-for` attribute.
 
 ```html
 <textarea id="message" maxlength="100"></textarea>
@@ -84,7 +88,8 @@ Automatically set the `aria-invalid` attribute to `false` when an input changes.
 
 ### AJAX
 
-Allow for form submissions and link navigation with AJAX using `data-ajax-replace`
+Allow for form submissions and link navigation with AJAX using
+`data-ajax-replace`
 
 ```html
 <div id="page">
@@ -94,7 +99,8 @@ Allow for form submissions and link navigation with AJAX using `data-ajax-replac
 
 ## Graceful Degradation
 
-All features are implemented as progressive enhancements, meaning the basic functionality will work even if JavaScript is disabled.
+All features are implemented as progressive enhancements, meaning the basic
+functionality will work even if JavaScript is disabled.
 
 ## License
 
