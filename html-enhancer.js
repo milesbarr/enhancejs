@@ -4,7 +4,7 @@
 document.addEventListener("submit", event => {
   const submitter = event.submitter;
   const form = event.target;
-  const message = submitter.dataset.formconfirm || form.dataset.confirm;
+  const message = submitter?.dataset.formconfirm || form?.dataset.confirm;
   if (message && !confirm(message)) event.preventDefault();
 });
 
@@ -12,7 +12,9 @@ document.addEventListener("submit", event => {
 document.addEventListener("click", event => {
   const button = event.target;
   if (!button.hasAttribute("data-share")) return;
-  navigator.share({ title: document.title, url: window.location.href });
+  const canonical = document.querySelector("link[rel='canonical']");
+  const url = canonical?.href || window.location.href;
+  navigator.share({ title: document.title, url: url });
 });
 
 // Copy buttons
@@ -55,20 +57,20 @@ document.addEventListener("input", event => {
   if (!control.matches("input[maxlength][id], textarea[maxlength][id]")) return;
   const charsRemaining = Math.max(0, control.maxLength - control.value.length);
   document.querySelectorAll(`[data-chars-remaining-for="${control.id}"]`)
-      .forEach(el => {
-    el.textContent = charsRemaining;
-  });
+    .forEach(el => {
+      el.textContent = charsRemaining;
+    });
 });
 
-// Image preview for file inputs
+// Image previews for file uploads
 document.addEventListener("change", event => {
   const fileInput = event.target;
   if (!fileInput.matches("input[type='file'][id]")) return;
   document.querySelectorAll(`img[data-preview-for="${fileInput.id}"]`)
-      .forEach(img => {
-    img.dataset.defaultSrc = img.dataset.defaultSrc || img.src;
-    img.src = fileInput.files.length > 0
+    .forEach(img => {
+      img.dataset.defaultSrc = img.dataset.defaultSrc || img.src;
+      img.src = fileInput.files.length > 0
         ? URL.createObjectURL(fileInput.files[0])
         : img.dataset.defaultSrc;
-  });
+    });
 });

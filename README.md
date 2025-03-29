@@ -1,4 +1,4 @@
-# HTML Enhancements
+# HTML Enhancer
 
 A lightweight JavaScript library that provides progressive enhancements for HTML
 forms and user interactions. This library adds functionality while maintaining
