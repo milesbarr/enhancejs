@@ -31,7 +31,6 @@ Add confirmation dialogs to form submissions using the `data-confirm` or
 <form >
 ```
 
-
 ### Unsaved Changes Warning
 
 Warn users about unsaved form changes with the `data-warn-unsaved` attribute.
@@ -78,6 +77,24 @@ Show the remaining character count for controls with the
 <span data-chars-remaining-for="message"></span>
 ```
 
+### Auto-resize Textareas
+
+Automatically resize textareas based on their content using the
+`data-auto-resize` attribute.
+
+```html
+<textarea data-auto-resize></textarea>
+```
+
+### Smooth Scrolling
+
+Enable smooth scrolling for anchor links (links starting with #) automatically.
+
+```html
+<a href="#section">Go to section</a>
+<div id="section">Content</div>
+```
+
 ### Invalid Inputs
 
 Automatically set the `aria-invalid` attribute to `false` when an input changes.
@@ -88,8 +105,8 @@ Automatically set the `aria-invalid` attribute to `false` when an input changes.
 
 ### AJAX
 
-Allow for form submissions and link navigation with AJAX using
-`data-ajax-replace`
+Allow for form submissions and link navigation with AJAX using the
+`data-ajax-replace` attribute.
 
 ```html
 <div id="page">

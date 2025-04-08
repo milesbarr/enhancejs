@@ -74,3 +74,22 @@ document.addEventListener("change", event => {
         : img.dataset.defaultSrc;
     });
 });
+
+// Auto-resize textareas
+document.addEventListener("input", event => {
+  const textarea = event.target;
+  if (!textarea.matches("textarea[data-auto-resize]")) return;
+  textarea.style.minHeight = textarea.style.minHeight || textarea.scrollHeight + "px";
+  textarea.style.height = "auto";
+  textarea.style.height = textarea.scrollHeight + "px";
+});
+
+// Smooth scrolling for anchor links
+document.addEventListener("click", event => {
+  const link = event.target.closest("a[href^='#']");
+  if (!link) return;
+  const target = document.querySelector(link.getAttribute("href"));
+  if (!target) return;
+  event.preventDefault();
+  target.scrollIntoView({ behavior: "smooth" });
+});
