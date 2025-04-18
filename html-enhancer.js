@@ -75,7 +75,7 @@ document.addEventListener("change", event => {
     });
 });
 
-// Auto-resize textareas
+// Auto-resizable textareas
 document.addEventListener("input", event => {
   const textarea = event.target;
   if (!textarea.matches("textarea[data-auto-resize]")) return;

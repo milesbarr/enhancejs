@@ -77,7 +77,7 @@ Show the remaining character count for controls with the
 <span data-chars-remaining-for="message"></span>
 ```
 
-### Auto-resize Textareas
+### Auto-resizable Textareas
 
 Automatically resize textareas based on their content using the
 `data-auto-resize` attribute.
