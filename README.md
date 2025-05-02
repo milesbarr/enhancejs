@@ -1,4 +1,4 @@
-# HTML Enhancer
+# HTML Enhance
 
 A lightweight JavaScript library that provides progressive enhancements for HTML
 forms and user interactions. This library adds functionality while maintaining
@@ -101,6 +101,16 @@ Automatically set the `aria-invalid` attribute to `false` when an input changes.
 
 ```html
 <input type="text" aria-invalid="true">
+```
+
+### Drag-and-Drop File Uploads
+
+Add drag-and-drop file uploads with the `data-drop-zone` attribute.
+
+```html
+<label data-drop-zone>
+  <input type="file">
+</label>
 ```
 
 ### AJAX
