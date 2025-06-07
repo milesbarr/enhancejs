@@ -1,4 +1,4 @@
-# HTML Enhance
+# HTML Enhancements
 
 A lightweight JavaScript library that provides progressive enhancements for HTML
 forms and user interactions. This library adds functionality while maintaining
@@ -9,8 +9,8 @@ zero dependencies and graceful degradation.
 Include the required files:
 
 ```html
-<script src="html-enhance.js" async defer></script>
-<script src="html-enhance-ajax.js" async defer></script>
+<script src="html-enhancements.js" async defer></script>
+<script src="html-enhancements-ajax.js" async defer></script>
 ```
 
 ## Usage
@@ -25,10 +25,6 @@ Add confirmation dialogs to form submissions using the `data-confirm` or
   <!-- Form content -->
   <button data-formconfirm="Are you sure you want to press this button?">
 </form>
-```
-
-```html
-<form >
 ```
 
 ### Unsaved Changes Warning
@@ -131,4 +127,4 @@ functionality will work even if JavaScript is disabled.
 
 ## License
 
-This project is licensed under the [MIT license](LICENSE).
+This project is licensed under the [MIT License](LICENSE).
