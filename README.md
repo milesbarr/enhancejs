@@ -1,4 +1,4 @@
-# HTML Enhancements
+# HTML Enhance
 
 A lightweight JavaScript library that provides progressive enhancements for HTML
 forms and user interactions. This library adds functionality while maintaining
@@ -9,8 +9,8 @@ zero dependencies and graceful degradation.
 Include the required files:
 
 ```html
-<script src="html-enhancements.js" async defer></script>
-<script src="html-enhancements-ajax.js" async defer></script>
+<script src="html-enhance.js" async defer></script>
+<script src="html-enhance-ajax.js" async defer></script>
 ```
 
 ## Usage
