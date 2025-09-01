@@ -63,7 +63,7 @@ document.addEventListener("input", event => {
   });
 });
 
-// Image previews for file uploads
+// Image file previews
 {
   const defaultImgSrcs = new WeakMap();
 
@@ -103,7 +103,7 @@ document.addEventListener("click", event => {
   target.scrollIntoView({ behavior: "smooth" });
 });
 
-// Drag-and-drop file uploads
+// File drag-and-drop
 document.addEventListener("dragover", event => {
   const dropZone = event.target.closest("[data-drop-zone]");
   if (!dropZone) return;

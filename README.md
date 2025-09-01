@@ -6,33 +6,31 @@ zero dependencies and graceful degradation.
 
 ## Setup
 
-Include the library:
+Include the library in your HTML file:
 
 ```html
 <script src="enhance.js" async defer></script>
 ```
 
-Copy [`noscript.html`](noscript.html) to the `<head>` section of the page for
-graceful degredation for users with JavaScript disabled.
+For graceful degradation for users with JavaScript disabled, copy
+[`noscript.html`](noscript.html) into the `<head>` section of your HTML file.
 
 ## Usage
 
 ### Form Confirmations
 
-Add confirmation dialogs to form submissions using the `data-confirm` or
-`data-formconfirm` attributes.
+Add confirmation dialogs to forms or form submission buttons:
 
 ```html
-<form data-confirm="Are you sure you want to submit this form?">
+<form data-confirm="Are you sure?">
   <!-- Form content -->
-  <button data-formconfirm="Are you sure you want to press this button?">
+  <button data-formconfirm="Are you sure?">Submit</button>
 </form>
 ```
 
 ### Unsaved Changes Warning
 
-Warn users about unsaved form changes with the `data-unsaved-changes-warning`
-attribute.
+Warn users about unsaved changes in forms:
 
 ```html
 <form data-unsaved-changes-warning>
@@ -42,7 +40,7 @@ attribute.
 
 ### Share Buttons
 
-Add share buttons with the `data-share` attribute.
+Add share functionality:
 
 ```html
 <button type="button" data-share>Share</button>
@@ -50,16 +48,16 @@ Add share buttons with the `data-share` attribute.
 
 ### Copy Buttons
 
-Add copy buttons with the `data-copy` attribute.
+Add copy-to-clipboard functionality:
 
 ```html
 <input type="text" id="text">
 <button type="button" data-copy="text">Copy</button>
 ```
 
-### File Upload Previews
+### Image File Previews
 
-Preview images for file inputs using the `data-preview-for` attribute.
+Preview images for file inputs:
 
 ```html
 <input type="file" id="upload">
@@ -68,18 +66,16 @@ Preview images for file inputs using the `data-preview-for` attribute.
 
 ### Character Counter
 
-Show the remaining character count for controls with the
-`data-chars-remaining-for` attribute.
+Display the remaining character count for text inputs:
 
 ```html
 <textarea id="message" maxlength="100"></textarea>
 <span data-chars-remaining-for="message"></span>
 ```
 
-### Auto-resizable Textareas
+### Auto-Resizable Textareas
 
-Automatically resize textareas based on their content using the
-`data-auto-resize` attribute.
+Automatically adjust textarea height based on content:
 
 ```html
 <textarea data-auto-resize></textarea>
@@ -87,7 +83,7 @@ Automatically resize textareas based on their content using the
 
 ### Smooth Scrolling
 
-Enable smooth scrolling for anchor links (links starting with #) automatically.
+Automatic smooth scrolling to anchor links:
 
 ```html
 <a href="#section">Go to section</a>
@@ -96,15 +92,15 @@ Enable smooth scrolling for anchor links (links starting with #) automatically.
 
 ### Invalid Inputs
 
-Automatically set the `aria-invalid` attribute to `false` when an input changes.
+Automatically reset `aria-invalid` attributes:
 
 ```html
 <input type="text" aria-invalid="true">
 ```
 
-### Drag-and-Drop File Uploads
+### File Drag-and-Drop
 
-Add drag-and-drop file uploads with the `data-drop-zone` attribute.
+Add file drag-and-drop functionality:
 
 ```html
 <label data-drop-zone>
@@ -112,10 +108,9 @@ Add drag-and-drop file uploads with the `data-drop-zone` attribute.
 </label>
 ```
 
-### AJAX
+### AJAX Support
 
-Allow for form submissions and link navigation with AJAX using the
-`data-ajax-replace` attribute.
+Use AJAX for form submissions and link navigation:
 
 ```html
 <div id="page">
