@@ -1,4 +1,4 @@
-# HTML Enhance
+# Enhance.js
 
 A lightweight JavaScript library that provides progressive enhancements for HTML
 forms and user interactions. This library adds functionality while maintaining
@@ -6,12 +6,14 @@ zero dependencies and graceful degradation.
 
 ## Setup
 
-Include the required files:
+Include the library:
 
 ```html
-<script src="html-enhance.js" async defer></script>
-<script src="html-enhance-ajax.js" async defer></script>
+<script src="enhance.js" async defer></script>
 ```
+
+Copy [`noscript.html`](noscript.html) to the `<head>` section of the page for
+graceful degredation for users with JavaScript disabled.
 
 ## Usage
 
@@ -29,10 +31,11 @@ Add confirmation dialogs to form submissions using the `data-confirm` or
 
 ### Unsaved Changes Warning
 
-Warn users about unsaved form changes with the `data-warn-unsaved` attribute.
+Warn users about unsaved form changes with the `data-unsaved-changes-warning`
+attribute.
 
 ```html
-<form data-warn-unsaved>
+<form data-unsaved-changes-warning>
   <!-- Form content -->
 </form>
 ```
