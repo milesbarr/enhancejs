@@ -26,6 +26,14 @@ document.addEventListener("click", event => {
   document.execCommand("copy");
 });
 
+// Copy-on-focus
+document.addEventListener("focus", event => {
+  const target = event.target;
+  if (!target.matches("[data-copy-on-focus]")) return;
+  target.select();
+  document.execCommand("copy");
+});
+
 // Reset invalid controls
 document.addEventListener("input", event => {
   const control = event.target;

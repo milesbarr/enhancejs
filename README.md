@@ -55,6 +55,14 @@ Add copy-to-clipboard functionality:
 <button type="button" data-copy="text">Copy</button>
 ```
 
+### Copy-on-Focus
+
+Automatically select and copy control content on focus:
+
+```html
+<input type="text" readonly data-copy-on-focus value="Copy me!">
+```
+
 ### Image File Previews
 
 Preview images for file inputs:
