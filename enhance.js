@@ -1,6 +1,5 @@
 "use strict";
 
-// Form confirmations
 document.addEventListener("submit", event => {
   const submitter = event.submitter;
   const form = event.target;
@@ -8,17 +7,13 @@ document.addEventListener("submit", event => {
   if (message && !confirm(message)) event.preventDefault();
 });
 
-// Share buttons
-document.addEventListener("click", event => {
-  const button = event.target;
-  if (!button.hasAttribute("data-share")) return;
-  const title = button.dataset.share || document.title;
-  const canonical = document.querySelector("link[rel='canonical']");
-  const url = canonical?.href || window.location.href;
-  navigator.share({ title: title, url: url });
+document.addEventListener("focus", event => {
+  const control = event.target;
+  if (!control || !control.matches("[data-copy-on-focus]")) return;
+  control.select();
+  document.execCommand("copy");
 });
 
-// Copy buttons
 document.addEventListener("click", event => {
   const button = event.target;
   if (!button.hasAttribute("data-copy")) return;
@@ -26,28 +21,12 @@ document.addEventListener("click", event => {
   document.execCommand("copy");
 });
 
-// Copy-on-focus
-document.addEventListener("focus", event => {
-  const target = event.target;
-  if (!target.matches("[data-copy-on-focus]")) return;
-  target.select();
-  document.execCommand("copy");
-});
-
-// Reset invalid controls
-document.addEventListener("input", event => {
-  const control = event.target;
-  if (!control.hasAttribute("aria-invalid")) return;
-  control.ariaInvalid = "false";
-});
-
-// Unsaved changes warning
 {
   let hasUnsavedChanges = false;
 
   document.addEventListener("change", event => {
-    const input = event.target;
-    if (!input.closest("[data-unsaved-changes-warning]")) return;
+    const control = event.target;
+    if (!control.closest("[data-unsaved-changes-warning]")) return;
     hasUnsavedChanges = true;
   });
 
@@ -60,93 +39,47 @@ document.addEventListener("input", event => {
   }, { once: true });
 }
 
-// Characters remaining
-document.addEventListener("input", event => {
-  const control = event.target;
-  if (!control.matches("input[maxlength][id], textarea[maxlength][id]")) return;
-  const charsRemaining = Math.max(0, control.maxLength - control.value.length);
-  document.querySelectorAll(`[data-chars-remaining-for="${control.id}"]`)
-      .forEach(counter => {
-    counter.textContent = charsRemaining;
-  });
-});
-
-// Image file previews
-{
-  const defaultImgSrcs = new WeakMap();
-
-  document.addEventListener("change", event => {
-    const fileInput = event.target;
-    if (!fileInput.matches("input[type='file'][id]")) return;
-    document.querySelectorAll(`img[data-preview-for="${fileInput.id}"]`)
-        .forEach(img => {
-      if (!defaultImgSrcs.has(img)) defaultImgSrcs.set(img, img.src);
-      img.src = fileInput.files.length > 0
-        ? URL.createObjectURL(fileInput.files[0])
-        : defaultImgSrcs.get(img);
-    });
-  });
-}
-
-// Auto-resizable textareas
-{
-  const resizeTextarea = textarea => {
-    if (!textarea.matches("textarea[data-auto-resize]")) return;
-    textarea.style.height = textarea.scrollHeight + "px";
-  };
-  document.querySelectorAll("textarea[data-auto-resize]")
-      .forEach(resizeTextarea);
-  document.addEventListener("input", event => {
-    resizeTextarea(event.target);
-  });
-}
-
-// Smooth scrolling for anchor links
-document.addEventListener("click", event => {
-  const link = event.target.closest("a[href^='#']");
-  if (!link) return;
-  const target = document.querySelector(link.href);
-  if (!target) return;
-  event.preventDefault();
-  target.scrollIntoView({ behavior: "smooth" });
-});
-
-// File drag-and-drop
-document.addEventListener("dragover", event => {
-  const dropZone = event.target.closest("[data-drop-zone]");
-  if (!dropZone) return;
-  event.preventDefault();
-  dropZone.classList.add("drag-over");
-});
-
-document.addEventListener("dragleave", event => {
-  const dropZone = event.target.closest("[data-drop-zone]");
-  if (!dropZone) return;
-  event.preventDefault();
-  dropZone.classList.remove("drag-over");
-});
-
-document.addEventListener("drop", event => {
-  const dropZone = event.target.closest("[data-drop-zone]");
-  if (!dropZone) return;
-  event.preventDefault();
-  dropZone.classList.remove("drag-over");
-  const files = event.dataTransfer.files;
-  const fileInput = dropZone.querySelector("input[type='file']");
-  if (fileInput) fileInput.files = files;
-});
-
-// AJAX replacement
 const AJAX_HEADERS = { "X-Requested-With": "XMLHttpRequest" };
 
+// Links
+document.addEventListener("click", async event => {
+  const link = event.target;
+  if (!link || !link.matches("a[data-ajax-replace]")) return;
+  const url = link.href;
+
+  // Fetch the HTML.
+  let html;
+  try {
+    const response = await fetch(url, { headers: AJAX_HEADERS });
+    if (!response.ok) throw new Error();
+    html = await response.text();
+  } catch (error) {
+    return;
+  }
+
+  // Insert the HTML.
+  const tmp = document.createElement("div");
+  tmp.innerHTML = html;
+  const target = document.getElementById(link.dataset.ajaxReplace);
+  target.replaceChildren(...tmp.children);
+  target.scrollIntoView();
+
+  // Update the history.
+  history.pushState({ replace: link.dataset.ajaxReplace }, null, url);
+
+  // Prevent following the link.
+  event.preventDefault();
+});
+
+// Forms
 document.addEventListener("submit", async event => {
   const submitter = event.submitter;
   const form = event.target;
-  if (!form.matches("form[data-ajax-replace]")) return;
+  if (!form || !form.matches("form[data-ajax-replace]")) return;
 
   // Get form data.
-  const method = submitter.formmethod || form.method;
-  const url = new URL(submitter.formAction || form.action);
+  const method = submitter?.formmethod || form.method;
+  const url = new URL(submitter?.formAction || form.action);
   const formData = new FormData(form);
   let options = {};
   if (method === "post") {
@@ -169,43 +102,14 @@ document.addEventListener("submit", async event => {
   // Insert the HTML.
   const tmp = document.createElement("div");
   tmp.innerHTML = html;
-  const container = document.getElementById(form.dataset.ajaxReplace);
-  container.replaceChildren(...tmp.children);
-  container.scrollIntoView();
+  const target = document.getElementById(form.dataset.ajaxReplace);
+  target.replaceChildren(...tmp.children);
+  target.scrollIntoView();
 
-  // Update the URL.
+  // Update the history.
   history.replaceState({ replace: form.dataset.ajaxReplace }, null, url);
 
   // Prevent form submission.
-  event.preventDefault();
-});
-
-document.addEventListener("click", async event => {
-  const anchor = event.target;
-  if (!anchor.matches("a[data-ajax-replace]")) return;
-  const url = anchor.href;
-
-  // Fetch the HTML.
-  let html;
-  try {
-    const response = await fetch(url, { headers: AJAX_HEADERS });
-    if (!response.ok) throw new Error();
-    html = await response.text();
-  } catch (error) {
-    return;
-  }
-
-  // Insert the HTML.
-  const tmp = document.createElement("div");
-  tmp.innerHTML = html;
-  const container = document.getElementById(anchor.dataset.ajaxReplace);
-  container.replaceChildren(...tmp.children);
-  container.scrollIntoView();
-
-  // Update the URL.
-  history.pushState({ replace: anchor.dataset.ajaxReplace }, null, url);
-
-  // Prevent following the link.
   event.preventDefault();
 });
 
@@ -216,9 +120,7 @@ window.addEventListener("popstate", async event => {
   // Fetch the HTML.
   let html;
   try {
-    const response = await fetch(url, {
-      headers: { "X-Requested-With": "XMLHttpRequest" },
-    });
+    const response = await fetch(url, { headers: AJAX_HEADERS });
     if (!response.ok) throw new Error();
     html = await response.text();
   } catch (error) {
@@ -229,16 +131,40 @@ window.addEventListener("popstate", async event => {
   // Insert the HTML.
   const tmp = document.createElement("div");
   tmp.innerHTML = html;
-  const container = document.getElementById(event.state.replace);
-  container.replaceChildren(...tmp.children);
-  container.scrollIntoView();
+  const target = document.getElementById(event.state.replace);
+  target.replaceChildren(...tmp.children);
+  target.scrollIntoView();
 });
 
-// Invokers polyfill
+document.addEventListener("click", event => {
+  if (!event.target) return;
+  const link = event.target.closest("a[href^='#']");
+  if (!link) return;
+  const target = document.querySelector(link.href);
+  if (!target) return;
+  event.preventDefault();
+  target.scrollIntoView({ behavior: "smooth" });
+});
+
+{
+  const defaultImgSrcs = new WeakMap();
+
+  document.addEventListener("change", event => {
+    const fileInput = event.target;
+    if (!fileInput.matches("input[type='file'][id]")) return;
+    document.querySelectorAll(`img[data-preview-for="${fileInput.id}"]`)
+        .forEach(img => {
+      if (!defaultImgSrcs.has(img)) defaultImgSrcs.set(img, img.src);
+      img.src = fileInput.files.length > 0
+        ? URL.createObjectURL(fileInput.files[0])
+        : defaultImgSrcs.get(img);
+    });
+  });
+}
+
 document.addEventListener("click", event => {
   const button = event.target;
-  if (!button.matches("button[command][commandfor]")) return;
-  if (button.disabled) return;
+  if (!button || !button.matches("button[command][commandfor]")) return;
   const target = document.querySelector(button.getAttribute("commandfor"));
   if (!target) return;
   const command = button.getAttribute("command");
@@ -265,3 +191,64 @@ document.addEventListener("click", event => {
       break;
   }
 });
+
+document.addEventListener("drop", event => {
+  const fileInput = event.target;
+  if (!fileInput || !fileInput.matches("input[type='file']")) return;
+  event.preventDefault();
+  const files = event.dataTransfer.files;
+  fileInput.files = files;
+});
+
+document.addEventListener("dragover", event => {
+  if (!event.target) return;
+  const dropZone = event.target.closest("[data-drop-zone]");
+  if (!dropZone) return;
+  event.preventDefault();
+  dropZone.classList.add("drag-over");
+});
+
+document.addEventListener("dragleave", event => {
+  if (!event.target) return;
+  const dropZone = event.target.closest("[data-drop-zone]");
+  if (!dropZone) return;
+  event.preventDefault();
+  dropZone.classList.remove("drag-over");
+});
+
+document.addEventListener("drop", event => {
+  if (!event.target) return;
+  const dropZone = event.target.closest("[data-drop-zone]");
+  if (!dropZone) return;
+  event.preventDefault();
+  dropZone.classList.remove("drag-over");
+  const files = event.dataTransfer.files;
+  const fileInput = dropZone.querySelector("input[type='file']");
+  if (fileInput) fileInput.files = files;
+});
+
+document.addEventListener("input", event => {
+  const control = event.target;
+  if (!control.matches("input[id][maxlength], textarea[id][maxlength]")) return;
+  const charsRemaining = Math.max(0, control.maxLength - control.value.length);
+  document.querySelectorAll(`[data-chars-remaining-for="${control.id}"]`)
+      .forEach(container => {
+    container.textContent = charsRemaining;
+  });
+});
+
+document.addEventListener("click", event => {
+  const button = event.target;
+  if (!button || !button.hasAttribute("data-share")) return;
+  const title = button.dataset.share || document.title;
+  const canonical = document.querySelector("link[rel='canonical']");
+  const url = canonical?.href || window.location.href;
+  navigator.share({ title: title, url: url });
+});
+
+document.addEventListener("input", event => {
+  const control = event.target;
+  if (!control.hasAttribute("aria-invalid")) return;
+  control.ariaInvalid = "false";
+});
+
